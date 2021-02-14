@@ -1,7 +1,10 @@
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import axios from "axios";
 
-const Register = () => {
+/**
+ * @return {JSX.Element} Register Element
+ */
+function Register() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -77,6 +80,6 @@ const Register = () => {
       <a href="/login">Already have an account?</a>
     </div>
   );
-};
+}
 
 export default Register;

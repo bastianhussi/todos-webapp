@@ -1,7 +1,13 @@
+import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import Navbar from "./app/Navbar";
+import Login from "./Login";
+import Register from "./Register";
 
+/**
+ * @return {JSX.Element} App Element
+ */
 function App() {
   return (
     <Router>
@@ -17,7 +23,8 @@ function App() {
               </section>
             )}
           />
-          <Redirect to="/" />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
         </Switch>
       </div>
     </Router>

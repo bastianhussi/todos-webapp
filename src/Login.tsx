@@ -1,17 +1,28 @@
 import axios from "axios";
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import User from "./features/session/user";
+import { login } from "./features/session/sessionReducer";
 
-const Login = () => {
+// https://dev.to/ksushiva/authentication-with-react-js-9e4
+
+/**
+ * @return {JSX.Element} Login Element
+ */
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post("/api/login", {
+      const res = await axios.post<User>("/api/login", {
         email,
         password,
       });
+      dispatch(login(res.data));
     } catch (err) {
       console.error(err);
     }
@@ -49,6 +60,6 @@ const Login = () => {
       <a href="/register">No account yet?</a>
     </div>
   );
-};
+}
 
 export default Login;
