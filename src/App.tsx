@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Navbar from "./app/Navbar";
-import Login from "./Login";
-import Register from "./Register";
-import Todos from "./Todos";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Todos from "./pages/Todos";
 
 /**
  * @return {JSX.Element} App Element

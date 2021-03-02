@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
-import { LOGIN_SESSION, SessionState } from "./store/session/types";
+import { useHistory } from "react-router";
+import { LOGIN_SESSION, SessionState } from "../store/session/types";
 
 // https://dev.to/ksushiva/authentication-with-react-js-9e4
 
@@ -13,6 +14,7 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -22,6 +24,8 @@ function Login() {
         password,
       });
       dispatch({ type: LOGIN_SESSION, payload: res.data });
+
+      history.replace("/");
     } catch (err) {
       console.error(err);
     }
