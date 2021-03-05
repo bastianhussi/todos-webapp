@@ -1,8 +1,11 @@
-export interface User {
-  id: number;
-  name: string;
+export interface LoginUser {
   email: string;
   password: string;
+}
+
+export interface User extends LoginUser {
+  id: number;
+  name: string;
 }
 
 export interface SessionState {
@@ -15,7 +18,7 @@ export const LOGOUT_SESSION = "LOGOUT_SESSION";
 
 interface LoginSessionAction {
   type: typeof LOGIN_SESSION;
-  payload: User;
+  payload: LoginUser;
 }
 
 interface LogoutSessionAction {

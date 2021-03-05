@@ -1,7 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
+import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Todos from "./pages/Todos";
@@ -11,25 +13,14 @@ import Todos from "./pages/Todos";
  */
 function App(): JSX.Element {
   return (
-    <Router>
-      <Navbar />
-      <div className="App">
-        <Switch>
-          <Route path="/" component={Todos} />
-          <Route
-            exact
-            path="/about"
-            render={() => (
-              <section>
-                <h2>About us</h2>
-              </section>
-            )}
-          />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-        </Switch>
-      </div>
-    </Router>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/about" component={About} />
+        <PublicRoute path="/login" component={Login} />
+        <PublicRoute path="/register" component={Register} />
+        <PrivateRoute path="/" component={Todos} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 

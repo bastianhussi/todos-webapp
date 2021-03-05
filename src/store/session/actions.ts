@@ -1,9 +1,9 @@
-import { SessionActionTypes, User, LOGIN_SESSION, LOGOUT_SESSION } from "./types";
+import { SessionActionTypes, LOGIN_SESSION, LOGOUT_SESSION, LoginUser } from "./types";
 
-export const loginSession = (user: User): SessionActionTypes => {
+export const loginSession = (userData: LoginUser): SessionActionTypes => {
   return {
     type: LOGIN_SESSION,
-    payload: user,
+    payload: userData,
   };
 };
 
