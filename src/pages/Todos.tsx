@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { FormEvent, useState } from "react";
 import { useStore } from "react-redux";
-import { SessionState } from "../store/session/types";
+
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import { LOGOUT_SESSION, SessionState } from "../store/session/types";
 
 type Todo = {
   id: number;
@@ -54,6 +57,9 @@ const Todos = () => {
   const [title, setTitle] = useState("");
   const store = useStore<SessionState>();
 
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   const { user } = store.getState();
 
   const submitForm = async (e: FormEvent) => {
@@ -71,11 +77,19 @@ const Todos = () => {
     }
   };
 
+  const logout = () => {
+    dispatch({ type: LOGOUT_SESSION });
+    history.replace("/login");
+  };
+
   // TODO: add styling! Use emotion?
 
   return (
     <>
       <h1>Hello, {user?.name}!</h1>
+      <button onClick={logout} style={{ color: "#magenta" }}>
+        Logout
+      </button>
       <form onSubmit={submitForm}>
         <label htmlFor="todoTitle">
           <input

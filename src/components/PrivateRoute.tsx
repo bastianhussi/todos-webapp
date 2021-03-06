@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useStore } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import { SessionState } from "../store/session/types";
+import { SessionState, SET_SESSION } from "../store/session/types";
 import Loading from "./Loading";
 
 type Props = {
@@ -10,11 +10,20 @@ type Props = {
 
 const PrivateRoute = ({ component: Component, ...rest }: Props) => {
   const store = useStore<SessionState>();
+  const dispatch = useDispatch();
   const state = store.getState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.localStorage.getItem("auth");
+    const authString = window.localStorage.getItem("auth");
+    if (authString) {
+      const authData = JSON.parse(authString);
+      // TODO: validate data
+      dispatch({
+        type: SET_SESSION,
+        payload: authData,
+      });
+    }
     // setLoading(false);
     setLoading(false);
   });

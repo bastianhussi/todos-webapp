@@ -14,6 +14,7 @@ export interface SessionState {
 }
 
 export const LOGIN_SESSION = "LOGIN_SESSION";
+export const SET_SESSION = "SET_SESSION";
 export const LOGOUT_SESSION = "LOGOUT_SESSION";
 
 interface LoginSessionAction {
@@ -21,8 +22,13 @@ interface LoginSessionAction {
   payload: LoginUser;
 }
 
+interface SetSessionAction {
+  type: typeof SET_SESSION;
+  payload: SessionState;
+}
+
 interface LogoutSessionAction {
   type: typeof LOGOUT_SESSION;
 }
 
-export type SessionActionTypes = LoginSessionAction | LogoutSessionAction;
+export type SessionActionTypes = LoginSessionAction | LogoutSessionAction | SetSessionAction;
