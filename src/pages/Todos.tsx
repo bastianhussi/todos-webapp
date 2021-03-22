@@ -60,7 +60,7 @@ const Todos = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { user } = store.getState();
+  const { profile: user } = store.getState();
 
   const submitForm = async (e: FormEvent) => {
     // FIXME: find more elgant way ensuring that user is not undefined.

@@ -17,14 +17,13 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
   useEffect(() => {
     const authString = window.localStorage.getItem("auth");
     if (authString) {
-      const authData = JSON.parse(authString);
       // TODO: validate data
+      const authData: SessionState = JSON.parse(authString);
       dispatch({
         type: SET_SESSION,
         payload: authData,
       });
     }
-    // setLoading(false);
     setLoading(false);
   });
 
@@ -38,7 +37,7 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
           <Route
             {...rest}
             render={(routeProps) =>
-              state.user ? <Component {...routeProps} /> : <Redirect to="/login" />
+              state.token ? <Component {...routeProps} /> : <Redirect to="/login" />
             }
           />
         )

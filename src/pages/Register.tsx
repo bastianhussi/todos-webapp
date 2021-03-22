@@ -13,12 +13,13 @@ function Register() {
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post("/api/register", {
+      const res = await axios.post("http://localhost:6000/register", {
         email,
         name,
         password,
         passwordConfirm,
       });
+      console.log(res);
     } catch (err) {
       console.error(err);
     }
@@ -40,7 +41,7 @@ function Register() {
           />
         </label>
         <label htmlFor="name">
-          Email
+          Name
           <input
             type="text"
             name="name"

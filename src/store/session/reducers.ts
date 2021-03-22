@@ -2,7 +2,6 @@ import axios from "axios";
 import {
   LOGIN_SESSION,
   LOGOUT_SESSION,
-  User,
   SessionActionTypes,
   SessionState,
   SET_SESSION,
@@ -18,34 +17,27 @@ import {
 // };
 
 const initialState: SessionState = {
-  user: undefined,
+  profile: undefined,
 };
 
 const sessionReducer = (state = initialState, action: SessionActionTypes) => {
   switch (action.type) {
     case LOGIN_SESSION:
-      // TODO: make api call
-      const dummyToken = "123456789";
-      const dummyUser: User = {
-        id: 0,
-        email: action.payload.email,
-        password: action.payload.password,
-        name: "John Doe",
-      };
-
-      const session = { user: dummyUser, token: dummyToken };
-
       // Store the session data inside the browsers localStorage.
-      window.localStorage.setItem("auth", JSON.stringify(session));
+      window.localStorage.setItem("auth", JSON.stringify(action.payload));
       // Setting the authorization header for all requests made with Axios.
-      axios.defaults.headers.common["Authorization"] = dummyToken;
+      axios.defaults.headers.common["Authorization"] = action.payload.token;
 
-      return session;
-    case SET_SESSION:
       return action.payload;
     case LOGOUT_SESSION:
       window.localStorage.removeItem("auth");
+      delete axios.defaults.headers.common["Authorization"];
+
       return {};
+    case SET_SESSION:
+      // TODO: implement!
+
+      return action.payload;
     default:
       return state;
   }

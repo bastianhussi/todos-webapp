@@ -5,6 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store/index";
 import { Provider } from "react-redux";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:8080";
+// axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
+// axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 
 ReactDOM.render(
   <React.StrictMode>

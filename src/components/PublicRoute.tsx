@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useStore } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import { SessionState } from "../store/session/types";
+import { SessionState, SET_SESSION } from "../store/session/types";
 import Loading from "./Loading";
 
 type Props = {
@@ -9,13 +9,21 @@ type Props = {
 } & RouteProps;
 
 const PublicRoute = ({ component: Component, ...rest }: Props) => {
-  const [noAuth, setNoAuth] = useState(true);
   const store = useStore<SessionState>();
+  const dispatch = useDispatch();
   const state = store.getState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setNoAuth(!state.user && !window.localStorage.getItem("auth"));
+    const authString = window.localStorage.getItem("auth");
+    if (authString) {
+      // TODO: validate data
+      const authData: SessionState = JSON.parse(authString);
+      dispatch({
+        type: SET_SESSION,
+        payload: authData,
+      });
+    }
     setLoading(false);
   });
 
@@ -28,7 +36,9 @@ const PublicRoute = ({ component: Component, ...rest }: Props) => {
         ) : (
           <Route
             {...rest}
-            render={(routeProps) => (noAuth ? <Component {...routeProps} /> : <Redirect to="/" />)}
+            render={(routeProps) =>
+              state.token ? <Redirect to="/" /> : <Component {...routeProps} />
+            }
           />
         )
       }
