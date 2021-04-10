@@ -1,96 +1,63 @@
 import axios from "axios";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useStore } from "react-redux";
 
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { LOGOUT_SESSION, SessionState } from "../store/session/types";
-
-type Todo = {
-  id: number;
-  title: string;
-  createdAt: Date;
-  profileId: number;
-};
-
-type Props = { color: string } & Todo;
-
-const Todo = (props: Props) => {
-  const { title, color } = props;
-  return (
-    <li
-      style={{
-        backgroundColor: color,
-        marginTop: 12,
-        padding: 3,
-        border: "2px solid black",
-        width: "-moz-fit-content",
-      }}
-    >
-      {title}
-    </li>
-  );
-};
-
-const todos: Array<Todo> = [
-  {
-    id: 0,
-    title: "Walk the dog",
-    createdAt: new Date(2021, 3, 2),
-    profileId: 1,
-  },
-  {
-    id: 1,
-    title: "Shopping for groceries",
-    createdAt: new Date(2021, 3, 29),
-    profileId: 1,
-  },
-  {
-    id: 2,
-    title: "Learn React.js",
-    createdAt: new Date(2021, 2, 22),
-    profileId: 3,
-  },
-];
+import Loading from "../components/Loading";
+import TodoItem from "../components/TodoItem";
+import { RootState } from "../store";
+import { LOGOUT_SESSION } from "../store/session/types";
+import { CREATE_TODO, Todo } from "../store/todos/types";
 
 const Todos = () => {
+  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
-  const store = useStore<SessionState>();
 
+  const store = useStore<RootState>();
   const dispatch = useDispatch();
+
   const history = useHistory();
 
-  const { profile: user } = store.getState();
+  const {
+    session: { profile },
+    todos,
+  } = store.getState();
 
-  const submitForm = async (e: FormEvent) => {
-    // FIXME: find more elgant way ensuring that user is not undefined.
-    // The user cant be undefined because if he was this page would not be shown.
-    if (!user) return;
+  // TODO: fetch todos from server
+  useEffect(() => {
+    setLoading(false);
+  });
 
+  // createTodo will make a request to the api server.
+  // If the server returns a todo, store in the global store.
+  const createTodo = async (e: FormEvent) => {
     e.preventDefault();
-    await axios.post(`localhost:6000/${user.id}/todos`, {
-      title,
-    });
     try {
+      const res = await axios.post<Todo>(`localhost:8080/${profile?.id}/todos`, {
+        title,
+      });
+      dispatch({ type: CREATE_TODO, payload: res });
     } catch (err) {
       console.error(err);
     }
   };
 
+  // logout clears the user session and redirects the user back to the login-page.
   const logout = () => {
     dispatch({ type: LOGOUT_SESSION });
     history.replace("/login");
   };
 
-  // TODO: add styling! Use emotion?
-
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <>
-      <h1>Hello, {user?.name}!</h1>
+      <h1>Hello, {profile?.name}!</h1>
       <button onClick={logout} style={{ color: "#magenta" }}>
         Logout
       </button>
-      <form onSubmit={submitForm}>
+      <form onSubmit={createTodo}>
         <label htmlFor="todoTitle">
           <input
             type="text"
@@ -106,7 +73,7 @@ const Todos = () => {
       </form>
       <ul>
         {todos.map((todo) => (
-          <Todo color="#fdf2f4" key={todo.id} {...todo} />
+          <TodoItem key={todo.id} {...todo} />
         ))}
       </ul>
     </>

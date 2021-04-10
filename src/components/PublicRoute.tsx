@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import { SessionState, SET_SESSION } from "../store/session/types";
+import { RootState } from "../store";
+import { SessionState, CHANGE_SESSION } from "../store/session/types";
 import Loading from "./Loading";
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 } & RouteProps;
 
 const PublicRoute = ({ component: Component, ...rest }: Props) => {
-  const store = useStore<SessionState>();
+  const store = useStore<RootState>();
   const dispatch = useDispatch();
   const state = store.getState();
   const [loading, setLoading] = useState(true);
@@ -17,32 +18,29 @@ const PublicRoute = ({ component: Component, ...rest }: Props) => {
   useEffect(() => {
     const authString = window.localStorage.getItem("auth");
     if (authString) {
-      // TODO: validate data
-      const authData: SessionState = JSON.parse(authString);
-      dispatch({
-        type: SET_SESSION,
-        payload: authData,
-      });
+      try {
+        const authData: SessionState = JSON.parse(authString);
+        dispatch({
+          type: CHANGE_SESSION,
+          payload: authData,
+        });
+      } catch (err) {
+        window.localStorage.removeItem("auth");
+        console.error(err);
+      }
     }
     setLoading(false);
   });
 
-  return (
-    <>
-      {
-        // Check if message failed
-        loading ? (
-          <Loading />
-        ) : (
-          <Route
-            {...rest}
-            render={(routeProps) =>
-              state.token ? <Redirect to="/" /> : <Component {...routeProps} />
-            }
-          />
-        )
+  return loading ? (
+    <Loading />
+  ) : (
+    <Route
+      {...rest}
+      render={(routeProps) =>
+        state.session.token ? <Redirect to="/" /> : <Component {...routeProps} />
       }
-    </>
+    />
   );
 };
 

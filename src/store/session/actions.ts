@@ -3,7 +3,7 @@ import {
   LOGIN_SESSION,
   LOGOUT_SESSION,
   LoginState,
-  SET_SESSION,
+  CHANGE_SESSION,
   SessionState,
 } from "./types";
 
@@ -22,7 +22,7 @@ export const logoutSession = (): SessionActionTypes => {
 
 export const setSession = (sessionData: SessionState): SessionActionTypes => {
   return {
-    type: SET_SESSION,
+    type: CHANGE_SESSION,
     payload: sessionData,
   };
 };

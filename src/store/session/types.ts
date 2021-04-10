@@ -16,7 +16,7 @@ export type LoginState = {
 
 export const LOGIN_SESSION = "LOGIN_SESSION";
 export const LOGOUT_SESSION = "LOGOUT_SESSION";
-export const SET_SESSION = "SET_SESSION";
+export const CHANGE_SESSION = "SET_SESSION";
 
 interface LoginSessionAction {
   type: typeof LOGIN_SESSION;
@@ -27,9 +27,9 @@ interface LogoutSessionAction {
   type: typeof LOGOUT_SESSION;
 }
 
-interface SetSessionAction {
-  type: typeof SET_SESSION;
+interface ChangeSessionAction {
+  type: typeof CHANGE_SESSION;
   payload: SessionState;
 }
 
-export type SessionActionTypes = LoginSessionAction | LogoutSessionAction | SetSessionAction;
+export type SessionActionTypes = LoginSessionAction | LogoutSessionAction | ChangeSessionAction;
