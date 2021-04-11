@@ -2,10 +2,10 @@ import React from "react"
 
 const NotFound = () => {
     return (
-        <div>
-            <p>404</p>
-        </div>
-    )
+      <div>
+        <p>Not found</p>
+      </div>
+    );
 }
 
 export default NotFound;
