@@ -34,4 +34,3 @@ test("full app rendering/navigating", () => {
   const leftClick = { button: 0 };
   userEvent.click(screen.getByText("No account yet?"), leftClick);
 });
-

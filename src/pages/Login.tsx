@@ -1,9 +1,33 @@
-/* import axios from "axios"; */
 import axios from "axios";
 import React, { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { LoginState, LOGIN_SESSION } from "../store/session/types";
+import styled from "styled-components";
+import { Button, FormField } from "../components/Form";
+
+const LoginHeader = styled.h1`
+  text-align: center;
+  color: black;
+`;
+
+const LoginPanel = styled.div`
+  background: aqua;
+  width: 70%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 25px 25px;
+`;
+
+const LoginFooter = styled.div`
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  background-color: white;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
 
 /**
  * @return {JSX.Element} Login Element
@@ -50,36 +74,42 @@ function Login() {
   };
 
   return (
-    <div>
-      <form onSubmit={(e) => submit(e)}>
-        <label htmlFor="email">
-          Email
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder=""
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder=""
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-      <a href="/register">No account yet?</a>
-    </div>
+    <>
+      <LoginHeader>Login</LoginHeader>
+      <LoginPanel>
+        <form onSubmit={(e) => submit(e)}>
+          <FormField>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder=""
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </FormField>
+          <FormField>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder=""
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </FormField>
+          <FormField>
+            <Button type="submit">Login</Button>
+          </FormField>
+        </form>
+        <a href="/register">No account yet?</a>
+      </LoginPanel>
+      <LoginFooter>Hello</LoginFooter>
+    </>
   );
 }
 
